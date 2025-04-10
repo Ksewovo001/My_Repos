@@ -5,6 +5,7 @@ import numpy as np
 from sentence_transformers import SentenceTransformer
 from PIL import Image
 
+
 st.markdown(
     """
     <style>
@@ -13,23 +14,36 @@ st.markdown(
         }
         .stTextInput > div > div > input {
             border-radius: 10px;
-            padding: 10px;
+            padding: 12px;
+            font-size: 16px;
+        }
+        @media screen and (max-width: 768px) {
+            h1 {
+                font-size: 28px !important;
+            }
+            p, .stTextInput input {
+                font-size: 16px !important;
+            }
         }
     </style>
     """,
     unsafe_allow_html=True
 )
 
+
 st.markdown(
     """
-    <h1 style='text-align: center; color: crimson;'>🎓 ISU Student Account Chatbot</h1>
+    <h1 style='text-align: center; color: crimson;'>🎓 ISU Parents Q&A Chatbot</h1>
     <p style='text-align: center;'>Helping parents and families find answers, faster.</p>
     """,
     unsafe_allow_html=True
 )
 
-image = Image.open("Chatbot.png")
-st.image(image, width=150)
+try:
+    image = Image.open("Chatbot.png")
+    st.image(image, width=150)
+except:
+    pass  
 
 st.markdown("<h3 style='text-align: center;'>Ask your question below 👇</h3>", unsafe_allow_html=True)
 
@@ -40,7 +54,9 @@ with open('question_embeddings.pkl', 'rb') as f:
 print(f"Loaded {len(df)} Q&A pairs.")
 print(f"Number of embedding vectors: {len(question_embeddings)}")
 
+
 model = SentenceTransformer('sentence-transformers/all-MiniLM-L6-v2')
+
 
 user_question = "Can I pay my bill with a credit card?"
 query_vec = np.array(model.encode(user_question))
@@ -66,6 +82,7 @@ def answer_query(question):
     sims = dots / (np.linalg.norm(question_embeddings, axis=1) * np.linalg.norm(q_vec))
     best_i = np.argmax(sims)
     return df.iloc[best_i]["Answers"], df.iloc[best_i]["Questions"], sims[best_i]
+
 
 user_input = st.text_input("Enter your question:")
 
