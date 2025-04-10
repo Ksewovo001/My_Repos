@@ -3,6 +3,35 @@ import pandas as pd
 import pickle
 import numpy as np
 from sentence_transformers import SentenceTransformer
+from PIL import Image
+
+st.markdown(
+    """
+    <style>
+        .stApp {
+            background-color: #f9f9f9;
+        }
+        .stTextInput > div > div > input {
+            border-radius: 10px;
+            padding: 10px;
+        }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
+st.markdown(
+    """
+    <h1 style='text-align: center; color: crimson;'>🎓 ISU Student Account Chatbot</h1>
+    <p style='text-align: center;'>Helping parents and families find answers, faster.</p>
+    """,
+    unsafe_allow_html=True
+)
+
+image = Image.open("Chatbot.png")
+st.image(image, width=150)
+
+st.markdown("<h3 style='text-align: center;'>Ask your question below 👇</h3>", unsafe_allow_html=True)
 
 df = pd.read_csv('Student_Accounts_Embedded.csv')
 with open('question_embeddings.pkl', 'rb') as f:
@@ -37,10 +66,6 @@ def answer_query(question):
     sims = dots / (np.linalg.norm(question_embeddings, axis=1) * np.linalg.norm(q_vec))
     best_i = np.argmax(sims)
     return df.iloc[best_i]["Answers"], df.iloc[best_i]["Questions"], sims[best_i]
-
-
-st.title("Student Account Chatbot")
-st.write("Ask me a question about your student account.")
 
 user_input = st.text_input("Enter your question:")
 
