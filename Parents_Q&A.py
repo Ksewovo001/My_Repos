@@ -5,22 +5,17 @@ import numpy as np
 from sentence_transformers import SentenceTransformer
 from PIL import Image
 
+
 st.markdown(
     """
     <style>
         .stApp {
-            background-color: #1e1e1e;
-            color: red;
+            background-color: #f9f9f9;
         }
         .stTextInput > div > div > input {
             border-radius: 10px;
             padding: 12px;
             font-size: 16px;
-            background-color: #333;
-            color: white;  /* User input field remains white */
-        }
-        .stMarkdown h1, .stMarkdown h3, .stMarkdown p, .stMarkdown div {
-            color: red !important;
         }
         @media screen and (max-width: 768px) {
             h1 {
@@ -35,20 +30,20 @@ st.markdown(
     unsafe_allow_html=True
 )
 
+
 st.markdown(
     """
-    <h1 style='text-align: center; color: red;'>🎓 ISU Student Account Chatbot 🧾</h1>
-    <p style='text-align: center;'>Helping parents and families find answers, faster — now in dark mode.</p>
+    <h1 style='text-align: center; color: crimson;'>🎓 ISU Parents Q&A Chatbot</h1>
+    <p style='text-align: center;'>Helping parents and families find answers, faster.</p>
     """,
     unsafe_allow_html=True
 )
-
 
 try:
     image = Image.open("Chatbot.png")
     st.image(image, width=150)
 except:
-    pass
+    pass  
 
 st.markdown("<h3 style='text-align: center;'>Ask your question below 👇</h3>", unsafe_allow_html=True)
 
