@@ -4,7 +4,7 @@ import pickle
 import numpy as np
 from sentence_transformers import SentenceTransformer
 
-df = pd.read_csv('C:\\Users\\adelp\\OneDrive\\Documents\\BIS 362\\Student_Accounts_Embedded.csv')
+df = pd.read_csv('Student_Accounts_Embedded.csv')
 with open('question_embeddings.pkl', 'rb') as f:
     question_embeddings = pickle.load(f)
 
