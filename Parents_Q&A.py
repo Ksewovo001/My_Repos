@@ -10,17 +10,17 @@ st.markdown(
     <style>
         .stApp {
             background-color: #1e1e1e;
-            color: white;
+            color: red;
         }
         .stTextInput > div > div > input {
             border-radius: 10px;
             padding: 12px;
             font-size: 16px;
             background-color: #333;
-            color: white;
+            color: white;  /* User input field remains white */
         }
         .stMarkdown h1, .stMarkdown h3, .stMarkdown p, .stMarkdown div {
-            color: white !important;
+            color: red !important;
         }
         @media screen and (max-width: 768px) {
             h1 {
@@ -35,20 +35,20 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-
 st.markdown(
     """
-    <h1 style='text-align: center; color: #ff4b4b;'>🎓 ISU Parents Q&A Chatbot 🧾</h1>
+    <h1 style='text-align: center; color: red;'>🎓 ISU Student Account Chatbot 🧾</h1>
     <p style='text-align: center;'>Helping parents and families find answers, faster — now in dark mode.</p>
     """,
     unsafe_allow_html=True
 )
 
+
 try:
-    image = Image.open("logo.png")
+    image = Image.open("Chatbot.png")
     st.image(image, width=150)
 except:
-    pass 
+    pass
 
 st.markdown("<h3 style='text-align: center;'>Ask your question below 👇</h3>", unsafe_allow_html=True)
 
@@ -61,6 +61,7 @@ print(f"Number of embedding vectors: {len(question_embeddings)}")
 
 
 model = SentenceTransformer('sentence-transformers/all-MiniLM-L6-v2')
+
 
 user_question = "Can I pay my bill with a credit card?"
 query_vec = np.array(model.encode(user_question))
