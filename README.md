@@ -1,0 +1,2 @@
+📘 README
+This repository contains the code and data for a chatbot designed to assist parents and family members of Illinois State University (ISU) students. The chatbot provides helpful answers to frequently asked questions related to student accounts, tuition, billing, and other important topics. It leverages natural language processing to match user questions with accurate responses from a curated dataset. All necessary files — including the chatbot script, dataset, and pre-computed embeddings — are included to ensure smooth deployment and functionality.
