@@ -11,7 +11,7 @@ with open('question_embeddings.pkl', 'rb') as f:
 print(f"Loaded {len(df)} Q&A pairs.")
 print(f"Number of embedding vectors: {len(question_embeddings)}")
 
-model = SentenceTransformer('all-MiniLM-L6-v2')
+model = SentenceTransformer('sentence-transformers/all-MiniLM-L6-v2')
 
 user_question = "Can I pay my bill with a credit card?"
 query_vec = np.array(model.encode(user_question))
