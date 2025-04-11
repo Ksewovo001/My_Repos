@@ -7,14 +7,12 @@ from PIL import Image
 
 st.set_page_config(page_title="ISU Parents Chatbot", layout="centered")
 
-
 try:
     model = SentenceTransformer("paraphrase-MiniLM-L3-v2")
 except Exception as e:
     st.error("Error loading the model.")
     st.exception(e)
     st.stop()
-
 
 
 try:
@@ -24,6 +22,7 @@ try:
 except:
     st.error("Failed to load Student Accounts dataset or embeddings.")
     st.stop()
+
 
 try:
     df_admissions = pd.read_csv('Admissions.csv')
@@ -49,9 +48,9 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-
+# Header
 st.markdown("""
-    <h1 style='color: #d62828;'>🎓 ISU Parents Q&A Chatbot</h1>
+    <h1 style='color: #d62828;'>🎓 ISU Parents Q&A Chatbot 🧾</h1>
     <p>Helping parents and families find answers, faster.</p>
 """, unsafe_allow_html=True)
 
@@ -61,10 +60,15 @@ try:
 except:
     pass
 
-
+# Input interface
 category = st.selectbox("Select a topic:", ["Student Accounts", "Admissions"])
 st.markdown("<h3>Ask your question below 👇</h3>", unsafe_allow_html=True)
-user_input = st.text_area("Enter your question:", key="user_question", height=100)
+
+
+with st.form("question_form"):
+    user_input = st.text_input("Enter your question:", key="user_question")
+    submitted = st.form_submit_button("Submit")
+
 
 def answer_query(question, data_df, embeddings):
     if not question.strip():
@@ -76,17 +80,16 @@ def answer_query(question, data_df, embeddings):
     question_col = "Question" if "Question" in data_df.columns else "Questions"
     return data_df.iloc[best_i][answer_col], data_df.iloc[best_i][question_col], sims[best_i]
 
-
-if user_input:
+if submitted and user_input:
     if category == "Student Accounts":
         answer, matched_q, score = answer_query(user_input, df_accounts, embeddings_accounts)
     else:
         answer, matched_q, score = answer_query(user_input, df_admissions, embeddings_admissions)
 
-    if answer:
+    if answer and score > 0.3:
         st.subheader("Answer:")
         st.write(answer)
         st.caption(f"Matched Question: {matched_q}")
         st.caption(f"Similarity Score: {score:.3f}")
     else:
-        st.warning("Please enter a valid question.")
+        st.warning("No strong match found. Try rephrasing your question.")
