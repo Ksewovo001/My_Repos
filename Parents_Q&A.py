@@ -25,10 +25,13 @@ except:
 
 try:
     df_admissions = pd.read_csv('Admissions.csv')
-    admissions_questions = df_admissions['Question'].tolist()
+    if 'Question' not in df_admissions.columns:
+        raise ValueError("The CSV must contain a 'Question' column.")
+    admissions_questions = df_admissions['Question'].dropna().astype(str).tolist()
     embeddings_admissions = np.array(model.encode(admissions_questions))
-except:
+except Exception as e:
     st.error("❌ Failed to load Admissions data or encode questions.")
+    st.exception(e)
     st.stop()
 
 
