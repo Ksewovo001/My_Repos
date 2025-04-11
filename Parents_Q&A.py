@@ -5,34 +5,45 @@ import pickle
 from sentence_transformers import SentenceTransformer
 from PIL import Image
 
-model = SentenceTransformer("Ksewovo001/My-Repos-Model")
+st.set_page_config(page_title="ISU Parents Chatbot", layout="centered")
 
-df_accounts = pd.read_csv('Student_Accounts_Embedded.csv')
-with open('question_embeddings.pkl', 'rb') as f:
-    embeddings_accounts = np.array(pickle.load(f))
 
-df_admissions = pd.read_csv('Admissions.csv')
-admissions_questions = df_admissions['Question'].tolist()
-embeddings_admissions = np.array(model.encode(admissions_questions))
+try:
+    model = SentenceTransformer("Ksewovo001/My-Repos-Model")
+except Exception as e:
+    st.error("❌ Error loading model. Please check if it's public and properly formatted.")
+    st.stop()
 
-st.markdown(
-    """
+
+try:
+    df_accounts = pd.read_csv('Student_Accounts_Embedded.csv')
+    with open('question_embeddings.pkl', 'rb') as f:
+        embeddings_accounts = np.array(pickle.load(f))
+except:
+    st.error("❌ Failed to load Student Accounts dataset or embeddings.")
+    st.stop()
+
+try:
+    df_admissions = pd.read_csv('Admissions.csv')
+    admissions_questions = df_admissions['Question'].tolist()
+    embeddings_admissions = np.array(model.encode(admissions_questions))
+except:
+    st.error("❌ Failed to load Admissions data or encode questions.")
+    st.stop()
+
+
+st.markdown("""
     <style>
-        .stApp {
-            background-color: #f9f9f9;
-        }
-        h1, h3, p {
-            text-align: center;
-        }
+        .stApp { background-color: #f9f9f9; }
+        h1, h3, p { text-align: center; }
         .question-input input {
             border-radius: 8px;
             padding: 10px;
             font-size: 16px;
         }
     </style>
-    """,
-    unsafe_allow_html=True
-)
+""", unsafe_allow_html=True)
+
 
 st.markdown("""
     <h1 style='color: #d62828;'>🎓 ISU Parents Q&A Chatbot</h1>
@@ -45,12 +56,15 @@ try:
 except:
     pass
 
-category = st.selectbox("Select a topic:", ["Student Accounts", "Admissions"])
 
+category = st.selectbox("Select a topic:", ["Student Accounts", "Admissions"])
 st.markdown("<h3>Ask your question below 👇</h3>", unsafe_allow_html=True)
 user_input = st.text_input("Enter your question:", key="user_question")
 
+on
 def answer_query(question, data_df, embeddings):
+    if not question.strip():
+        return None, None, 0.0
     q_vec = np.array(model.encode(question))
     sims = embeddings.dot(q_vec) / (np.linalg.norm(embeddings, axis=1) * np.linalg.norm(q_vec))
     best_i = np.argmax(sims)
@@ -58,13 +72,17 @@ def answer_query(question, data_df, embeddings):
     question_col = "Question" if "Question" in data_df.columns else "Questions"
     return data_df.iloc[best_i][answer_col], data_df.iloc[best_i][question_col], sims[best_i]
 
+
 if user_input:
     if category == "Student Accounts":
         answer, matched_q, score = answer_query(user_input, df_accounts, embeddings_accounts)
     else:
         answer, matched_q, score = answer_query(user_input, df_admissions, embeddings_admissions)
 
-    st.subheader("Answer:")
-    st.write(answer)
-    st.caption(f"Matched Question: {matched_q}")
-    st.caption(f"Similarity Score: {score:.3f}")
+    if answer:
+        st.subheader("Answer:")
+        st.write(answer)
+        st.caption(f"Matched Question: {matched_q}")
+        st.caption(f"Similarity Score: {score:.3f}")
+    else:
+        st.warning("Please enter a valid question.")
