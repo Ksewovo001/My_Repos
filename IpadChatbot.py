@@ -83,24 +83,36 @@ user_input = st.text_input("Your question", key="user_question")
 def answer_query(question, data_df, embeddings):
     if not question.strip():
         return None, None, 0.0
+
     q_vec = np.array(model.encode(question))
     sims = embeddings.dot(q_vec) / (np.linalg.norm(embeddings, axis=1) * np.linalg.norm(q_vec))
     best_i = np.argmax(sims)
+
     answer_col = "Answer" if "Answer" in data_df.columns else "Answers"
     question_col = "Question" if "Question" in data_df.columns else "Questions"
+
+    # Check for missing column
+    if answer_col not in data_df.columns:
+        return "Error: Answer column missing in the dataset.", "", 0.0
+
     return data_df.iloc[best_i][answer_col], data_df.iloc[best_i][question_col], sims[best_i]
 
-# Handle query
-if st.button("Get Answer"):
+# Run only if input exists and button is clicked
+if user_input and st.button("Get Answer"):
+    st.write("You asked:", user_input)  # Debug print
+
     if category == "Student Accounts":
         answer, matched_q, score = answer_query(user_input, df_accounts, embeddings_accounts)
     else:
         answer, matched_q, score = answer_query(user_input, df_admissions, embeddings_admissions)
 
-    if answer:
+    # Add score threshold
+    if answer and score > 0.3:
         st.subheader("Answer:")
         st.write(answer)
         st.caption(f"Matched Question: {matched_q}")
         st.caption(f"Similarity Score: {score:.3f}")
+    elif answer and score <= 0.3:
+        st.warning("No strong match found. Try rephrasing your question.")
     else:
         st.warning("Please enter a valid question.")
