@@ -117,6 +117,11 @@ if user_input and st.button("Get Answer"):
         st.caption(f"Matched Question: {matched_q}")
         st.caption(f"Similarity Score: {score:.3f}")
     elif answer and score <= 0.3:
-        st.warning("No strong match found. Try rephrasing your question.")
+        st.markdown(
+    "<div style='background-color:#fff3cd; padding: 10px; border-radius:5px; color: black;'>"
+    "<strong>Warning:</strong> No strong match found. Try rephrasing your question."
+    "</div>",
+    unsafe_allow_html=True
+)
     else:
         st.warning("Please enter a valid question.")
