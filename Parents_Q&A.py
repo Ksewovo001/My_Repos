@@ -6,7 +6,7 @@ from sentence_transformers import SentenceTransformer
 from PIL import Image
 
 
-model = SentenceTransformer('sentence-transformers/all-MiniLM-L6-v2')
+model = SentenceTransformer("Ksewovo001/My-Repos-Model")
 
 
 df_accounts = pd.read_csv('Student_Accounts_Embedded.csv')
