@@ -94,4 +94,4 @@ def answer_query(question, data_df, embeddings):
     best_i = np.argmax(sims)
 
     answer_col = "Answer" if "Answer" in data_df.columns else "Answers"
-    question_col = "Question" if "Question"_
+    question_col = "Question" if "Question" in data_df.columns else "Questions"
