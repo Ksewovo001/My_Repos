@@ -11,7 +11,7 @@ st.set_page_config(page_title="ISU Parents Chatbot", layout="centered")
 try:
     model = SentenceTransformer("paraphrase-MiniLM-L3-v2")
 except Exception as e:
-    st.error("❌ Error loading the model.")
+    st.error("Error loading the model.")
     st.exception(e)
     st.stop()
 
@@ -22,7 +22,7 @@ try:
     with open('question_embeddings.pkl', 'rb') as f:
         embeddings_accounts = np.array(pickle.load(f))
 except:
-    st.error("❌ Failed to load Student Accounts dataset or embeddings.")
+    st.error("Failed to load Student Accounts dataset or embeddings.")
     st.stop()
 
 try:
@@ -32,7 +32,7 @@ try:
     admissions_questions = df_admissions['Question'].dropna().astype(str).tolist()
     embeddings_admissions = np.array(model.encode(admissions_questions))
 except Exception as e:
-    st.error("❌ Failed to load Admissions data or encode questions.")
+    st.error("Failed to load Admissions data or encode questions.")
     st.exception(e)
     st.stop()
 
