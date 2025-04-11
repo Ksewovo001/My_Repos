@@ -5,9 +5,7 @@ import pickle
 from sentence_transformers import SentenceTransformer
 from PIL import Image
 
-
 model = SentenceTransformer("Ksewovo001/My-Repos-Model")
-
 
 df_accounts = pd.read_csv('Student_Accounts_Embedded.csv')
 with open('question_embeddings.pkl', 'rb') as f:
@@ -16,7 +14,6 @@ with open('question_embeddings.pkl', 'rb') as f:
 df_admissions = pd.read_csv('Admissions.csv')
 admissions_questions = df_admissions['Question'].tolist()
 embeddings_admissions = np.array(model.encode(admissions_questions))
-
 
 st.markdown(
     """
@@ -37,12 +34,10 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-
 st.markdown("""
     <h1 style='color: #d62828;'>🎓 ISU Parents Q&A Chatbot</h1>
     <p>Helping parents and families find answers, faster.</p>
 """, unsafe_allow_html=True)
-
 
 try:
     image = Image.open("Chatbot.png")
@@ -50,13 +45,10 @@ try:
 except:
     pass
 
-
 category = st.selectbox("Select a topic:", ["Student Accounts", "Admissions"])
-
 
 st.markdown("<h3>Ask your question below 👇</h3>", unsafe_allow_html=True)
 user_input = st.text_input("Enter your question:", key="user_question")
-
 
 def answer_query(question, data_df, embeddings):
     q_vec = np.array(model.encode(question))
@@ -65,7 +57,6 @@ def answer_query(question, data_df, embeddings):
     answer_col = "Answer" if "Answer" in data_df.columns else "Answers"
     question_col = "Question" if "Question" in data_df.columns else "Questions"
     return data_df.iloc[best_i][answer_col], data_df.iloc[best_i][question_col], sims[best_i]
-
 
 if user_input:
     if category == "Student Accounts":
