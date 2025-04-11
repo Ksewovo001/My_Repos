@@ -9,11 +9,12 @@ st.set_page_config(page_title="ISU Parents Chatbot", layout="centered")
 
 
 try:
-model = SentenceTransformer("paraphrase-MiniLM-L3-v2")
-
+    model = SentenceTransformer("paraphrase-MiniLM-L3-v2")
 except Exception as e:
-    st.error("❌ Error loading model. Please check if it's public and properly formatted.")
+    st.error("❌ Error loading the model.")
+    st.exception(e)
     st.stop()
+
 
 
 try:
