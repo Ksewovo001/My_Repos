@@ -7,6 +7,7 @@ from PIL import Image
 
 st.set_page_config(page_title="ISU Parents Chatbot", layout="centered")
 
+# Load model
 try:
     model = SentenceTransformer("paraphrase-MiniLM-L3-v2")
 except Exception as e:
@@ -14,28 +15,31 @@ except Exception as e:
     st.exception(e)
     st.stop()
 
-
+# Load Student Accounts data
 try:
     df_accounts = pd.read_csv('Student_Accounts_Embedded.csv')
     with open('question_embeddings.pkl', 'rb') as f:
         embeddings_accounts = np.array(pickle.load(f))
-except:
+    # Normalize once if not already
+    embeddings_accounts = embeddings_accounts / np.linalg.norm(embeddings_accounts, axis=1, keepdims=True)
+except Exception as e:
     st.error("Failed to load Student Accounts dataset or embeddings.")
+    st.exception(e)
     st.stop()
 
-
+# Load Admissions data
 try:
     df_admissions = pd.read_csv('Admissions.csv')
     if 'Question' not in df_admissions.columns:
         raise ValueError("The CSV must contain a 'Question' column.")
     admissions_questions = df_admissions['Question'].dropna().astype(str).tolist()
-    embeddings_admissions = np.array(model.encode(admissions_questions))
+    embeddings_admissions = model.encode(admissions_questions, normalize_embeddings=True)
 except Exception as e:
     st.error("Failed to load Admissions data or encode questions.")
     st.exception(e)
     st.stop()
 
-
+# Custom CSS
 st.markdown("""
     <style>
         .stApp { background-color: #f9f9f9; }
@@ -54,32 +58,34 @@ st.markdown("""
     <p>Helping parents and families find answers, faster.</p>
 """, unsafe_allow_html=True)
 
+# Image
 try:
     image = Image.open("Chatbot.png")
     st.image(image, width=180)
 except:
     pass
 
-# Input interface
+# Topic and input form
 category = st.selectbox("Select a topic:", ["Student Accounts", "Admissions"])
 st.markdown("<h3>Ask your question below 👇</h3>", unsafe_allow_html=True)
-
 
 with st.form("question_form"):
     user_input = st.text_input("Enter your question:", key="user_question")
     submitted = st.form_submit_button("Submit")
 
-
+# Query logic
 def answer_query(question, data_df, embeddings):
     if not question.strip():
         return None, None, 0.0
-    q_vec = np.array(model.encode(question))
-    sims = embeddings.dot(q_vec) / (np.linalg.norm(embeddings, axis=1) * np.linalg.norm(q_vec))
+    # Normalize question vector
+    q_vec = model.encode(question, normalize_embeddings=True)
+    sims = embeddings.dot(q_vec)
     best_i = np.argmax(sims)
     answer_col = "Answer" if "Answer" in data_df.columns else "Answers"
     question_col = "Question" if "Question" in data_df.columns else "Questions"
     return data_df.iloc[best_i][answer_col], data_df.iloc[best_i][question_col], sims[best_i]
 
+# Handle query
 if submitted and user_input:
     if category == "Student Accounts":
         answer, matched_q, score = answer_query(user_input, df_accounts, embeddings_accounts)
