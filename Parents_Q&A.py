@@ -64,7 +64,7 @@ except:
 
 category = st.selectbox("Select a topic:", ["Student Accounts", "Admissions"])
 st.markdown("<h3>Ask your question below 👇</h3>", unsafe_allow_html=True)
-user_input = st.text_input("Enter your question:", key="user_question")
+user_input = st.text_area("Enter your question:", key="user_question", height=100)
 
 def answer_query(question, data_df, embeddings):
     if not question.strip():
