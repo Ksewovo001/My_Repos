@@ -9,32 +9,32 @@ st.set_page_config(page_title="ISU Parents Chatbot", layout="centered")
 
 # Load model
 try:
-model = SentenceTransformer("paraphrase-MiniLM-L3-v2")
+    model = SentenceTransformer("paraphrase-MiniLM-L3-v2")
 except Exception as e:
-st.error("Error loading the model.")
-st.exception(e)
-st.stop()
+    st.error("Error loading the model.")
+    st.exception(e)
+    st.stop()
 
 # Load Student Accounts data
 try:
-df_accounts = pd.read_csv('Student_Accounts_Embedded.csv')
-with open('question_embeddings.pkl', 'rb') as f:
-embeddings_accounts = np.array(pickle.load(f))
+    df_accounts = pd.read_csv('Student_Accounts_Embedded.csv')
+    with open('question_embeddings.pkl', 'rb') as f:
+        embeddings_accounts = np.array(pickle.load(f))
 except:
-st.error("Failed to load Student Accounts dataset or embeddings.")
-st.stop()
+    st.error("Failed to load Student Accounts dataset or embeddings.")
+    st.stop()
 
 # Load Admissions data
 try:
-df_admissions = pd.read_csv('Admissions.csv')
-if 'Question' not in df_admissions.columns:
-raise ValueError("The CSV must contain a 'Question' column.")
-admissions_questions = df_admissions['Question'].dropna().astype(str).tolist()
-embeddings_admissions = np.array(model.encode(admissions_questions))
+    df_admissions = pd.read_csv('Admissions.csv')
+    if 'Question' not in df_admissions.columns:
+        raise ValueError("The CSV must contain a 'Question' column.")
+    admissions_questions = df_admissions['Question'].dropna().astype(str).tolist()
+    embeddings_admissions = np.array(model.encode(admissions_questions))
 except Exception as e:
-st.error("Failed to load Admissions data or encode questions.")
-st.exception(e)
-st.stop()
+    st.error("Failed to load Admissions data or encode questions.")
+    st.exception(e)
+    st.stop()
 
 # Mobile-friendly style with black label fix
 st.markdown("""
@@ -74,10 +74,10 @@ st.markdown("""
 
 # Load image
 try:
-image = Image.open("Chatbot.png")
-st.image(image, width=150)
+    image = Image.open("Chatbot.png")
+    st.image(image, width=150)
 except:
-pass
+    pass
 
 # Input interface
 category = st.selectbox("Select a topic:", ["Student Accounts", "Admissions"])
@@ -86,37 +86,12 @@ user_input = st.text_input("Your question", key="user_question")
 
 # Query logic
 def answer_query(question, data_df, embeddings):
-if not question.strip():
-return None, None, 0.0
+    if not question.strip():
+        return None, None, 0.0
 
-q_vec = np.array(model.encode(question))
-sims = embeddings.dot(q_vec) / (np.linalg.norm(embeddings, axis=1) * np.linalg.norm(q_vec))
-best_i = np.argmax(sims)
+    q_vec = np.array(model.encode(question))
+    sims = embeddings.dot(q_vec) / (np.linalg.norm(embeddings, axis=1) * np.linalg.norm(q_vec))
+    best_i = np.argmax(sims)
 
-answer_col = "Answer" if "Answer" in data_df.columns else "Answers"
-question_col = "Question" if "Question" in data_df.columns else "Questions"
-
-# Check for missing column
-if answer_col not in data_df.columns:
-return "Error: Answer column missing in the dataset.", "", 0.0
-
-return data_df.iloc[best_i][answer_col], data_df.iloc[best_i][question_col], sims[best_i]
-
-# Run only if input exists and button is clicked
-if user_input and st.button("Get Answer"):
-st.write("You asked:", user_input)
-
-if category == "Student Accounts":
-answer, matched_q, score = answer_query(user_input, df_accounts, embeddings_accounts)
-else:
-answer, matched_q, score = answer_query(user_input, df_admissions, embeddings_admissions)
-
-if answer and score > 0.3:
-st.subheader("Answer:")
-st.write(answer)
-st.caption(f"Matched Question: {matched_q}")
-st.caption(f"Similarity Score: {score:.3f}")
-elif answer and score <= 0.3:
-st.warning("No strong match found. Try rephrasing your question.")
-else:
-st.warning("Please enter a valid question.")
+    answer_col = "Answer" if "Answer" in data_df.columns else "Answers"
+    question_col = "Question" if "Question"_
