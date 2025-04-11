@@ -36,7 +36,7 @@ except Exception as e:
     st.exception(e)
     st.stop()
 
-# Mobile-friendly style
+# Mobile-friendly style with black label fix
 st.markdown("""
     <style>
     .stApp {
@@ -57,6 +57,11 @@ st.markdown("""
     }
     .css-1cpxqw2 {
         overflow-y: auto;
+    }
+    /* Force label (prompt) text to black */
+    label {
+        color: black !important;
+        font-weight: 500;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -99,14 +104,13 @@ def answer_query(question, data_df, embeddings):
 
 # Run only if input exists and button is clicked
 if user_input and st.button("Get Answer"):
-    st.write("You asked:", user_input)  # Debug print
+    st.write("You asked:", user_input)
 
     if category == "Student Accounts":
         answer, matched_q, score = answer_query(user_input, df_accounts, embeddings_accounts)
     else:
         answer, matched_q, score = answer_query(user_input, df_admissions, embeddings_admissions)
 
-    # Add score threshold
     if answer and score > 0.3:
         st.subheader("Answer:")
         st.write(answer)
