@@ -20,8 +20,13 @@ try:
     df_accounts = pd.read_csv('Student_Accounts_Embedded.csv')
     with open('question_embeddings.pkl', 'rb') as f:
         embeddings_accounts = np.array(pickle.load(f))
-except:
+
+    # Debug shape match
+    if len(embeddings_accounts) != len(df_accounts):
+        st.warning("Mismatch between number of embeddings and number of rows in Student Accounts CSV.")
+except Exception as e:
     st.error("Failed to load Student Accounts dataset or embeddings.")
+    st.exception(e)
     st.stop()
 
 # Load Admissions data
@@ -55,10 +60,6 @@ st.markdown("""
         padding: 10px 20px;
         width: 100%;
     }
-    .css-1cpxqw2 {
-        overflow-y: auto;
-    }
-    /* Force label (prompt) text to black */
     label {
         color: black !important;
         font-weight: 500;
@@ -96,32 +97,38 @@ def answer_query(question, data_df, embeddings):
     answer_col = "Answer" if "Answer" in data_df.columns else "Answers"
     question_col = "Question" if "Question" in data_df.columns else "Questions"
 
-    # Check for missing column
     if answer_col not in data_df.columns:
         return "Error: Answer column missing in the dataset.", "", 0.0
 
     return data_df.iloc[best_i][answer_col], data_df.iloc[best_i][question_col], sims[best_i]
 
-# Run only if input exists and button is clicked
-if user_input and st.button("Get Answer"):
-    st.write("You asked:", user_input)
-
-    if category == "Student Accounts":
-        answer, matched_q, score = answer_query(user_input, df_accounts, embeddings_accounts)
+# Handle query logic
+if st.button("Get Answer"):
+    if not user_input.strip():
+        st.warning("Please enter a question before clicking.")
     else:
-        answer, matched_q, score = answer_query(user_input, df_admissions, embeddings_admissions)
+        st.write("You asked:", user_input)
 
-    if answer and score > 0.3:
-        st.subheader("Answer:")
-        st.write(answer)
-        st.caption(f"Matched Question: {matched_q}")
-        st.caption(f"Similarity Score: {score:.3f}")
-    elif answer and score <= 0.3:
-        st.markdown(
-    "<div style='background-color:#fff3cd; padding: 10px; border-radius:5px; color: black;'>"
-    "<strong>Warning:</strong> No strong match found. Try rephrasing your question."
-    "</div>",
-    unsafe_allow_html=True
-)
-    else:
-        st.warning("Please enter a valid question.")
+        if category == "Student Accounts":
+            answer, matched_q, score = answer_query(user_input, df_accounts, embeddings_accounts)
+        else:
+            answer, matched_q, score = answer_query(user_input, df_admissions, embeddings_admissions)
+
+        # Debug output
+        st.write("Similarity Score:", score)
+        st.write("Matched Question:", matched_q)
+
+        if answer and score > 0.3:
+            st.subheader("Answer:")
+            st.write(answer)
+            st.caption(f"Matched Question: {matched_q}")
+            st.caption(f"Similarity Score: {score:.3f}")
+        elif answer and score <= 0.3:
+            st.markdown(
+                "<div style='background-color:#fff3cd; padding: 10px; border-radius:5px; color: black;'>"
+                "<strong>Warning:</strong> No strong match found. Try rephrasing your question."
+                "</div>",
+                unsafe_allow_html=True
+            )
+        else:
+            st.warning("Please enter a valid question.")
