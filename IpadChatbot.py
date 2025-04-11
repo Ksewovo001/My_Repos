@@ -38,38 +38,38 @@ except Exception as e:
 
 # Mobile-friendly style with black label fix
 st.markdown("""
-<style>
-.stApp {
-background-color: #f9f9f9;
-padding-bottom: 40px;
-}
-h1, h3, p {
-text-align: center;
-}
-.stTextInput>div>div>input {
-font-size: 18px;
-padding: 12px;
-}
-.stButton>button {
-font-size: 18px;
-padding: 10px 20px;
-width: 100%;
-}
-.css-1cpxqw2 {
-overflow-y: auto;
-}
-/* Force label (prompt) text to black */
-label {
-color: black !important;
-font-weight: 500;
-}
-</style>
+    <style>
+    .stApp {
+        background-color: #f9f9f9;
+        padding-bottom: 40px;
+    }
+    h1, h3, p {
+        text-align: center;
+    }
+    .stTextInput>div>div>input {
+        font-size: 18px;
+        padding: 12px;
+    }
+    .stButton>button {
+        font-size: 18px;
+        padding: 10px 20px;
+        width: 100%;
+    }
+    .css-1cpxqw2 {
+        overflow-y: auto;
+    }
+    /* Force label (prompt) text to black */
+    label {
+        color: black !important;
+        font-weight: 500;
+    }
+    </style>
 """, unsafe_allow_html=True)
 
 # Header
 st.markdown("""
-<h1 style='color: #d62828;'>ISU Parents Q&A Chatbot</h1>
-<p>Helping parents and families find answers, faster.</p>
+    <h1 style='color: #d62828;'>ISU Parents Q&A Chatbot</h1>
+    <p>Helping parents and families find answers, faster.</p>
 """, unsafe_allow_html=True)
 
 # Load image
@@ -95,3 +95,28 @@ def answer_query(question, data_df, embeddings):
 
     answer_col = "Answer" if "Answer" in data_df.columns else "Answers"
     question_col = "Question" if "Question" in data_df.columns else "Questions"
+
+    # Check for missing column
+    if answer_col not in data_df.columns:
+        return "Error: Answer column missing in the dataset.", "", 0.0
+
+    return data_df.iloc[best_i][answer_col], data_df.iloc[best_i][question_col], sims[best_i]
+
+# Run only if input exists and button is clicked
+if user_input and st.button("Get Answer"):
+    st.write("You asked:", user_input)
+
+    if category == "Student Accounts":
+        answer, matched_q, score = answer_query(user_input, df_accounts, embeddings_accounts)
+    else:
+        answer, matched_q, score = answer_query(user_input, df_admissions, embeddings_admissions)
+
+    if answer and score > 0.3:
+        st.subheader("Answer:")
+        st.write(answer)
+        st.caption(f"Matched Question: {matched_q}")
+        st.caption(f"Similarity Score: {score:.3f}")
+    elif answer and score <= 0.3:
+        st.warning("No strong match found. Try rephrasing your question.")
+    else:
+        st.warning("Please enter a valid question.")
