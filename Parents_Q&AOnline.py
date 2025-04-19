@@ -47,7 +47,7 @@ try:
         image1 = Image.open("Chatbot.png")
         st.image(image1, width=200)
     with cols[1]:
-        image2 = Image.open("Dr_Birdipedia.png")
+        image2 = Image.open("Dr_Birdiclopedia.png")
         st.image(image2, width=200)
 except:
     pass
