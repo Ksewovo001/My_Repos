@@ -105,7 +105,7 @@ if submitted:
 # Navigation link
 st.markdown("""
 <div style='text-align: center; margin-top: 10px;'>
-    Need more info? Visit the <a href='https://parents.illinoisstate.edu/' target='_blank'><strong>Parents & Family Resources</strong></a> page.
+    Need more info? Visit the <a href='https://parents.illinoisstate.edu/' target='_blank'><strong>Parents & Family Services</strong></a> page.
 </div>
 """, unsafe_allow_html=True)
 
