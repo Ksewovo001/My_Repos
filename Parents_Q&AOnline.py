@@ -86,7 +86,12 @@ if submitted and user_input:
 
 st.markdown("""
     <hr style='margin-top: 2em;'>
-    <div style='text-align: center; font-size: 14px;'>
-        Created by <br> Kankoe S. Rex A. Alaa H. Tyler C. Nathan P. Aidan D.
+    <div style='text-align: center; font-size: 14px; line-height: 1.8;'>
+        <div><strong>Created by</strong></div>
+        <div style='margin-top: 5px;'>
+            Kankoe S. &nbsp;&nbsp;&nbsp; Rex A. &nbsp;&nbsp;&nbsp; Alaa H. &nbsp;&nbsp;&nbsp; Tyler C. &nbsp;&nbsp;&nbsp; Nathan P.
+        </div>
+        <div style='margin-top: 5px;'>Aidan D.</div>
     </div>
 """, unsafe_allow_html=True)
+
