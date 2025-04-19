@@ -62,9 +62,9 @@ st.markdown("""
 st.markdown("""
 <p style='text-align: center;'><strong>Try asking:</strong></p>
 <ul style='text-align: center; list-style-type: none; padding-left: 0;'>
-    <li><em>\"How do I pay my student’s tuition?\"</em></li>
-    <li><em>\"Where can I find ISU parking information?\"</em></li>
-    <li><em>\"What scholarships are available?\"</em></li>
+    <li><em>\"What is the Redbird Scholarship Program?\"</em></li>
+    <li><em>\"How do I apply for housing?\"</em></li>
+    <li><em>\"What types of scholarships are offered?\"</em></li>
 </ul>
 """, unsafe_allow_html=True)
 
