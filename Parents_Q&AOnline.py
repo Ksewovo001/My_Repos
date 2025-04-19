@@ -44,10 +44,10 @@ st.markdown("""
 cols = st.columns([1, 1])
 try:
     with cols[0]:
-        image1 = Image.open("Dr_Birdiclopedia1.png")
+        image1 = Image.open("Dr_Birdiclopedia2.png")
         st.image(image1, width=200)
     with cols[1]:
-        image2 = Image.open("Dr_Birdiclopedia2.png")
+        image2 = Image.open("Dr_Birdiclopedia1.png")
         st.image(image2, width=200)
 except Exception as e:
     st.error("One or more images could not be loaded.")
