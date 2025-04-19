@@ -100,12 +100,12 @@ if submitted:
             st.caption(f"Similarity Score: {score:.3f}")
         else:
             st.subheader("Answer:")
-            st.write("While I'm working hard to provide you with an accurate answer, please refer to the [Parents and Family Resources](https://studentaccess.illinoisstate.edu/parents/) page for more details.")
+            st.write("While I'm working hard to provide you with an accurate answer, please refer to the [Parents and Family Resources](https://parents.illinoisstate.edu/) page for more details.")
 
 # Navigation link
 st.markdown("""
 <div style='text-align: center; margin-top: 10px;'>
-    Need more info? Visit the <a href='https://studentaccess.illinoisstate.edu/parents/' target='_blank'><strong>Parents & Family Resources</strong></a> page.
+    Need more info? Visit the <a href='https://parents.illinoisstate.edu/' target='_blank'><strong>Parents & Family Resources</strong></a> page.
 </div>
 """, unsafe_allow_html=True)
 
