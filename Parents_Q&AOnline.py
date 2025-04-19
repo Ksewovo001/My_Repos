@@ -31,7 +31,7 @@ st.markdown("""
         .question-input input {
             border-radius: 8px;
             padding: 10px;
-            font-size: 16px;
+            font-size: 18px;
         }
     </style>
 """, unsafe_allow_html=True)
@@ -41,8 +41,8 @@ st.markdown("""
     <p>Helping parents and families with quick and reliable answers.</p>
 """, unsafe_allow_html=True)
 
-cols = st.columns([1, 1, 1])  # Equal width columns for symmetry
-
+# Centered image layout
+cols = st.columns([1, 1, 1])
 try:
     with cols[0]:
         image1 = Image.open("Dr_Birdiclopedia2.png")
@@ -58,6 +58,21 @@ st.markdown("""
     <h3>Hello! I'm Dr. Birdiclopedia. Got questions for me? Ask away!!! 👇</h3>
 """, unsafe_allow_html=True)
 
+# Suggested questions
+st.markdown("""
+<p style='text-align: center;'><strong>Try asking:</strong></p>
+<ul style='text-align: center; list-style-type: none; padding-left: 0;'>
+    <li><em>\"How do I pay my student’s tuition?\"</em></li>
+    <li><em>\"Where can I find ISU parking information?\"</em></li>
+    <li><em>\"What scholarships are available?\"</em></li>
+</ul>
+""", unsafe_allow_html=True)
+
+# Help message
+with st.expander("❓ How it works"):
+    st.info("Type your question and click Submit. I’ll search for the best match and get back to you with a helpful answer!")
+
+# Form and logic
 with st.form("question_form"):
     user_input = st.text_input("Enter your question:", key="user_question")
     submitted = st.form_submit_button("Submit")
@@ -72,18 +87,29 @@ def answer_query(question, data_df, embeddings):
     question_col = "Question" if "Question" in data_df.columns else "Questions"
     return data_df.iloc[best_i][answer_col], data_df.iloc[best_i][question_col], sims[best_i]
 
-if submitted and user_input:
-    answer, matched_q, score = answer_query(user_input, df_big, embeddings_big)
-
-    if answer and score > 0.3:
-        st.subheader("Here is what I found for you:")
-        st.write(answer)
-        st.caption(f"Matched Question: {matched_q}")
-        st.caption(f"Similarity Score: {score:.3f}")
+if submitted:
+    if not user_input.strip():
+        st.warning("Please enter a question to get started.")
     else:
-        st.subheader("Answer:")
-        st.write("While I'm working hard to provide you with an accurate answer, please refer to the [Parents and Family Resources](https://studentaccess.illinoisstate.edu/parents/) page for more details.")
+        answer, matched_q, score = answer_query(user_input, df_big, embeddings_big)
 
+        if answer and score > 0.3:
+            st.subheader("Here is what I found for you:")
+            st.write(answer)
+            st.caption(f"Matched Question: {matched_q}")
+            st.caption(f"Similarity Score: {score:.3f}")
+        else:
+            st.subheader("Answer:")
+            st.write("While I'm working hard to provide you with an accurate answer, please refer to the [Parents and Family Resources](https://studentaccess.illinoisstate.edu/parents/) page for more details.")
+
+# Navigation link
+st.markdown("""
+<div style='text-align: center; margin-top: 10px;'>
+    Need more info? Visit the <a href='https://studentaccess.illinoisstate.edu/parents/' target='_blank'><strong>Parents & Family Resources</strong></a> page.
+</div>
+""", unsafe_allow_html=True)
+
+# Credits
 st.markdown("""
     <hr style='margin-top: 2em;'>
     <div style='text-align: center; font-size: 14px; line-height: 1.8;'>
@@ -94,4 +120,3 @@ st.markdown("""
         <div style='margin-top: 5px;'>Aidan D.</div>
     </div>
 """, unsafe_allow_html=True)
-
