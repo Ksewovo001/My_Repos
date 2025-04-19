@@ -38,7 +38,7 @@ st.markdown("""
 
 st.markdown("""
     <h1 style='color: #d62828;'>🎓 ISU Parents Q&A Chatbot 🧾</h1>
-    <p>Helping parents and families find answers, faster.</p>
+    <p>Helping parents and families with quick and reliable answers.</p>
 """, unsafe_allow_html=True)
 
 cols = st.columns([1, 1, 1])  # Equal width columns for symmetry
