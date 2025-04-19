@@ -16,7 +16,7 @@ except Exception as e:
 
 try:
     df_big = pd.read_csv('Big_Dataset.csv')
-    with open('question_embeddings.pkl', 'rb') as f:
+    with open('Big_Dataset_embeddings.pkl', 'rb') as f:
         embeddings_big = np.array(pickle.load(f))
     embeddings_big = embeddings_big / np.linalg.norm(embeddings_big, axis=1, keepdims=True)
 except Exception as e:
