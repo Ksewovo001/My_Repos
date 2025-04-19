@@ -41,7 +41,7 @@ st.markdown("""
     <p>Helping parents and families find answers, faster.</p>
 """, unsafe_allow_html=True)
 
-cols = st.columns([0.5, 1, 0.5, 1])
+cols = st.columns([0.8, 1, 0.3, 1])
 
 try:
     with cols[1]:
@@ -53,8 +53,6 @@ try:
 except Exception as e:
     st.error("One or more images could not be loaded.")
     st.exception(e)
-
-
     
 
 st.markdown("""
