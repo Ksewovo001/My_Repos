@@ -49,8 +49,10 @@ try:
     with cols[1]:
         image2 = Image.open("Dr_Birdiclopedia.png")
         st.image(image2, width=200)
-except:
-    pass
+except Exception as e:
+    st.error("One or more images could not be loaded.")
+    st.exception(e)
+    
 
 st.markdown("""
     <h3>Hello! I'm Dr. Birdiclopedia. Got questions for me? Ask away!!! 👇</h3>
