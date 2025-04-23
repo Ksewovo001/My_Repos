@@ -68,7 +68,7 @@ except Exception as img_err:
     st.error("Couldn’t load one or both images... might be missing?")
     st.exception(img_err)
 
-st.markdown("#### Hello!")
+st.markdown("#### Hello! I'm Dr. Birdiclopedia. Got questions for me? Ask away!!! 👇")
 
 st.markdown("""
 <p style='text-align: center;'><strong>Try asking:</strong></p>
