@@ -71,13 +71,16 @@ except Exception as img_err:
 st.markdown("#### Hello! I'm Dr. Birdiclopedia. Got questions for me? Ask away!!! 👇")
 
 st.markdown("""
-<p style='text-align: center;'><strong>Try asking:</strong></p>
-<ul style='text-align: center; list-style-type: none; padding-left: 0;'>
-    <li><em>"What is the Redbird Scholarship Program?"</em></li>
-    <li><em>"How do I apply for housing?"</em></li>
-    <li><em>"What types of scholarships are offered?"</em></li>
-</ul>
+<div style='text-align: center; color: var(--text-color);'>
+    <strong>Try asking:</strong>
+    <ul style='list-style-type: none; padding-left: 0;'>
+        <li><em>"What is the Redbird Scholarship Program?"</em></li>
+        <li><em>"How do I apply for housing?"</em></li>
+        <li><em>"What types of scholarships are offered?"</em></li>
+    </ul>
+</div>
 """, unsafe_allow_html=True)
+
 
 
 with st.expander("❓ How it works"):
