@@ -104,7 +104,7 @@ if was_submitted:
             st.write(best_ans)
         else:
             st.subheader("Dr. Birdiclopedia 🙂")
-            st.markdown("Let's check [https://illinoisstate.edu/](https://illinoisstate.edu/) for a much-detailed answer.", unsafe_allow_html=True)
+            st.markdown("Let's check the [Birdihouse 🏫](https://illinoisstate.edu/) for a much-detailed answer.", unsafe_allow_html=True)
 
 st.markdown("""
 <div style='text-align: center; margin-top: 10px;'>
