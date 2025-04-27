@@ -99,12 +99,12 @@ if was_submitted:
     else:
         best_ans, matched_q_text, similarity = find_best_answer(user_question, big_df, embedded_data)
 
-        if best_ans and similarity > 0.3:
+        if best_ans and similarity > 0.35:
             st.subheader("Dr. Birdiclopedia 🙂")
             st.write(best_ans)
         else:
             st.subheader("Answer:")
-            st.write("While I'm working hard to provide you with an accurate answer, Try checking the [Parents and Family Resources](https://parents.illinoisstate.edu/) page just in case.")
+            st.markdown("Let's check [https://illinoisstate.edu/](https://illinoisstate.edu/) for a much-detailed answer.", unsafe_allow_html=True)
 
 st.markdown("""
 <div style='text-align: center; margin-top: 10px;'>
