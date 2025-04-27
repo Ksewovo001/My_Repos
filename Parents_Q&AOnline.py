@@ -100,7 +100,7 @@ if was_submitted:
         best_ans, matched_q_text, similarity = find_best_answer(user_question, big_df, embedded_data)
 
         if best_ans and similarity > 0.3:
-            st.subheader("Here is what I found for you:")
+            st.subheader("Dr. Birdiclopedia 🙂")
             st.write(best_ans)
         else:
             st.subheader("Answer:")
