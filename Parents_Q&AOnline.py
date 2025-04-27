@@ -103,7 +103,7 @@ if was_submitted:
             st.subheader("Dr. Birdiclopedia 🙂")
             st.write(best_ans)
         else:
-            st.subheader("Answer:")
+            st.subheader("Dr. Birdiclopedia 🙂")
             st.markdown("Let's check [https://illinoisstate.edu/](https://illinoisstate.edu/) for a much-detailed answer.", unsafe_allow_html=True)
 
 st.markdown("""
