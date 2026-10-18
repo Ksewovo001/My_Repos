@@ -15,7 +15,7 @@ except Exception as err:
     st.stop()
 
 try:
-    big_df = pd.read_csv("Big_Dataset.csv")
+    big_df = pd.read_csv("Big_Dataset.csv", on_bad_lines="skip")
     with open("Big_Dataset_embeddings.pkl", "rb") as pkl_file:
         embedded_data = np.array(pickle.load(pkl_file))
     embedded_data = embedded_data / np.linalg.norm(embedded_data, axis=1, keepdims=True)
